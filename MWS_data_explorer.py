@@ -24,23 +24,18 @@ mwsCorpusPath= validatePathName(devmwsCorpusPath if ( len(sys.argv) < 2 ) else s
 ## Get current Shelly corpus
 files = os.listdir(mwsCorpusPath)
 
-mwsCorpusDF = pandas.DataFrame(columns=['fileName','text'])
+mwsCorpus = ''
 
 for file in files:
 	if (file.endswith('txt')):
 		print('|----------- ' + file)
 		with open((mwsCorpusPath+file), 'r') as f:
-				text=f.read()
-		mwsCorpusDF = mwsCorpusDF.append(pandas.DataFrame([[file, text]], columns=['fileName','text']))
-
-testtext = mwsCorpusDF.iloc[0]['text']
-searchtxt = mwsData.iloc[0]['text']
-
-if searchtxt not in testtext: 
-    print('Not found')		
-
-
+				mwsCorpus+=f.read()
+		
+##TODO: use NLTK
 for index, row in mwsData.iterrows():
-	#print(row['text'])
-	if row['text'] in testtext:
-		print('FOUND!!!!')
+	text = row['text']
+	if text not in mwsCorpus:
+		print('------------ Not found -----------')
+		print(text)
+		print('----------------------------------')
